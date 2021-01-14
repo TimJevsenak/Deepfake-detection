@@ -1,0 +1,7 @@
+{
+  "name": "DeepDetect",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

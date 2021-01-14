@@ -15,10 +15,12 @@
       </ion-toolbar>
     </ion-header>
 
+
     <div id="container">
+
       <strong>Enter a video</strong><br><br>
-      <small>Make sure that the video is not longer than 5min and cntains human faces.</small><br>
-      <ion-input type="url" value="" color="tertiary" pattern="url" placeholder="Video URL" inputmode="url"></ion-input>
+      <small>Make sure that the video is not longer than 5min and contains human faces.</small><br>
+      <ion-input type="url" [(ngModel)]="inputValue" color="tertiary" pattern="url" placeholder="Video URL" inputmode="url"></ion-input>
       <br>
       <ion-button color="success" (click) ="presentLoading()">Check</ion-button><br>
       <ion-button color="success" (click) ="presentLoadingWithOptions()">Another loading option</ion-button>

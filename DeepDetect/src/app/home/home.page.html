@@ -19,11 +19,11 @@
     <div id="container">
 
       <strong>Enter a video</strong><br><br>
-      <small>Make sure that the video is not longer than 5min and contains human faces.</small><br>
+      <small>Make sure that the video is not longer than 10min and contains human faces.</small><br>
       <ion-input type="url" [(ngModel)]="inputValue" color="tertiary" pattern="url" placeholder="Video URL" inputmode="url"></ion-input>
       <br>
       <ion-button color="success" (click) ="presentLoading()">Check</ion-button><br>
-      <ion-button color="success" (click) ="presentLoadingWithOptions()">Another loading option</ion-button>
+      <ion-button color="success" (click) ="presentLoadingWithOptions()">Another loading option</ion-button>  
       <br>
       <br>
       <br>
@@ -33,9 +33,9 @@
           <ion-col size="8">
             <p>The video is:</p>
             <br>
-            <ion-progress-bar color="danger" value="0.7"></ion-progress-bar>
+            <ion-progress-bar color="danger" id="progressbar" value={{progressSmall}}></ion-progress-bar>
             <br>
-            <p><em>70</em> % fake.</p>
+            <p><em>{{progress}}</em> % fake.</p>
           </ion-col>
           <ion-col size="2"></ion-col>
         </ion-row>

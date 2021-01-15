@@ -36,6 +36,5 @@ export class DataService {
 
     return this.http.get("https://thingproxy.freeboard.io/fetch/https://api.deepware.ai/api/v1/video/report?report-id=" + reportID, { headers: headers });
 
-    
   }
 }

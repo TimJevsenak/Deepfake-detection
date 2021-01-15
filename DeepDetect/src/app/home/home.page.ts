@@ -10,7 +10,8 @@ import { DataService } from '../services/data.service';
 })
 export class HomePage {
   private result;
-  private reportID;
+  public reportID: string;
+  public completed = false;
   inputValue: string = "";
 
   constructor(public loadingController: LoadingController, private dataService : DataService) {
@@ -26,21 +27,31 @@ export class HomePage {
     this.dataService.startScan(this.inputValue).subscribe(data =>
       {
         console.log(data);
-        data = JSON.parse(data.toString());
-        //????
+        this.reportID = data["report-id"]
         console.log(this.reportID);
-        this.dataService.getReport(this.reportID).subscribe(result =>
-          {
-            console.log(result);
-            this.result = result;
-            console.log(result);
-          },error =>
-          {
-            console.log(error);
-          },() =>
-          {
-            console.log('complete!');
-        });
+        
+        setTimeout(() => {
+          this.dataService.getReport(this.reportID).subscribe(result =>
+            {
+              console.log(result);
+              this.completed = result["completed"];
+              if(this.completed === false){
+                console.log("Try again later..");
+              }
+              else{
+                console.log(result["completed"]);
+                this.result = result;
+                console.log(result["score"]);
+                console.log("fertik");
+              }
+            },error =>
+            {
+              console.log(error);
+            },() =>
+            {
+              console.log('complete!');
+          });
+        }, 5000);
 
       },error =>
       {
@@ -67,6 +78,8 @@ export class HomePage {
   async presentLoadingWithOptions() {
     console.log(this.inputValue);
 
+    //this.getReport("03c61a4bc23478b73cf2e367c14cef975f1d2947-1610659700");
+
     const loading = await this.loadingController.create({
       spinner: null,
       duration: 5000,
@@ -80,6 +93,27 @@ export class HomePage {
     const { role, data } = await loading.onDidDismiss();
     console.log('Loading dismissed with role:', role);
   }
+
+/*  isComplete(reportID){
+    if(this.completed === false){
+      console.log("Completed is false right now");
+      setTimeout(this.getReport, 3000, reportID);
+    }
+  }
+
+  startTheScan(){
+    
+    
+  }
+
+  getReport(reportID){
+    console.log(reportID);
+    if(reportID != undefined){
+    
+    }
+  }
+    */
+  
 
 
 

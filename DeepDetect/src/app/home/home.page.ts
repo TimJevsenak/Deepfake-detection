@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
+import { observable } from 'rxjs';
 import { DataService } from '../services/data.service';
 
 
@@ -33,16 +34,12 @@ export class HomePage {
         setTimeout(() => {
           this.dataService.getReport(this.reportID).subscribe(result =>
             {
+              this.result = result;
               console.log(result);
+              console.log(this.result.results.deepware["score"]);
               this.completed = result["completed"];
-              if(this.completed === false){
+              if(this.completed == false){
                 console.log("Try again later..");
-              }
-              else{
-                console.log(result["completed"]);
-                this.result = result;
-                console.log(result["score"]);
-                console.log("fertik");
               }
             },error =>
             {

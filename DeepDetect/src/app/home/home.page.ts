@@ -13,6 +13,10 @@ export class HomePage {
   private result;
   public reportID: string;
   public completed = false;
+  public score = 0;
+  public scoreSmall = 0;
+  public barva;
+  public isItFake: string = "Scan a video to see if it's fake!";
   inputValue: string = "";
 
   constructor(public loadingController: LoadingController, private dataService : DataService) {
@@ -31,24 +35,46 @@ export class HomePage {
         this.reportID = data["report-id"]
         console.log(this.reportID);
         
-        setTimeout(() => {
-          this.dataService.getReport(this.reportID).subscribe(result =>
-            {
-              this.result = result;
-              console.log(result);
-              console.log(this.result.results.deepware["score"]);
-              this.completed = result["completed"];
-              if(this.completed == false){
-                console.log("Try again later..");
-              }
-            },error =>
-            {
-              console.log(error);
-            },() =>
-            {
-              console.log('complete!');
-          });
-        }, 5000);
+        const requestReport = () => {
+          setTimeout(() => {
+            this.dataService.getReport(this.reportID).subscribe(result =>
+              {
+                this.result = result;
+                console.log(result["completed"] + " - je stanje");
+                console.log(result);
+                this.completed = result["completed"];
+                if(this.completed == false){
+                  requestReport();
+                }
+                else{
+                  loading.dismiss();
+                  console.log(this.result.results.deepware["score"]);
+                  this.score = this.result.results.deepware["score"];
+                  this.scoreSmall = this.score/100;
+                  if(this.score < 40){
+                    this.barva = "success";
+                    this.isItFake = "Your video probably isn't fake!";
+                  }
+                  else if(this.score > 40 && this.score < 70){
+                    this.barva = "warning";
+                    this.isItFake = "Your video might be deepfaked!";
+                  }
+                  else{
+                    this.barva = "danger";
+                    this.isItFake = "Your video is probably a deepfake!";
+                  }
+                }
+              },error =>
+              {
+                console.log(error);
+              },() =>
+              {
+                console.log('complete!');
+            });
+          }, 2000);
+        }
+
+        requestReport();
 
       },error =>
       {
@@ -62,7 +88,7 @@ export class HomePage {
     const loading = await this.loadingController.create({
       cssClass: 'loading-css',
       message: 'Please wait...',
-      duration: 2000
+      duration: 60000
     });
     await loading.present();
 
